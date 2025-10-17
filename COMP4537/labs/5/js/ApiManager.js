@@ -10,7 +10,7 @@ const HEADER_CONTENT_TYPE   = "Content-Type";
 const HEADER_JSON_CONTENT   = "application/json";
 const RESULT_TABLE          = "resultTable";
 const ROW                   = "tr";
-const DEFAULT_RESPONSE      = "{}";
+const QUERY_PARAM          = "?query=";
 const RESULT_TABLE_HEADER = `
                     <thead>
                         <tr>
@@ -29,7 +29,7 @@ const RESULT_TABLE_ROW = (item) => `
                         `;
 const RESULT_TABLE_NO_DATA = `
                         <tr>
-                            <td colspan="3">No data found</td>
+                            <td colspan="3">No data found or Invalid SQL command</td>
                         </tr>
                     `;
 
@@ -59,8 +59,6 @@ export default class ApiManager {
                 if (xhr.status === STATUS_CREATED || xhr.status === STATUS_OK) {
                     try {
                         const data = JSON.parse(this.responseText);
-                        console.log(data);
-                        console.log(`${messages.MESSAGE_INSERT_SUCCESS}: `, JSON.parse(xhr.responseText));
                         alert(data.message);
                     }
                     catch (e) {
@@ -80,26 +78,15 @@ export default class ApiManager {
      */
     static async getData(data) {
         const xhr = new XMLHttpRequest();
-        xhr.open(
-            GET,
-            API_URL +
-                "?patientid=" + data.patientid +
-                "&name=" + data.name +
-                "&dateOfBirth=" + data.dateOfBirth,
-            true
-        );
+        xhr.open(GET, API_URL + QUERY_PARAM + data.query, true);
         xhr.send();
         xhr.onreadystatechange = function() {
             if (this.readyState === XMLHttpRequest.DONE && this.status === STATUS_OK) {
                 const resultTable = document.getElementById(RESULT_TABLE);
-                resultTable.innerHTML = RESULT_TABLE_HEADER;
-
-                console.log("Response Text:", xhr.responseText);
                 const responseData = JSON.parse(xhr.responseText);
-
+                resultTable.innerHTML = RESULT_TABLE_HEADER;
+                
                 if (responseData && responseData.length > EMPTY) {
-                    console.log(messages.MESSAGE_RETRIEVE_SUCCESS, responseData);
-
                     for (const item of responseData) {
                         const row = document.createElement(ROW);
                         row.innerHTML = RESULT_TABLE_ROW(item);

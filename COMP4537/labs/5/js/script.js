@@ -36,13 +36,13 @@ class FormListener {
         this.submitBtn.addEventListener(CLICK_METHOD, (event) => {
             event.preventDefault();
 
-            const getQuery = document.getElementById(SEND_QUERY).value;
+            const sql = document.getElementById(SEND_QUERY).value;
 
             const data = {
-                query: getQuery
+                query: sql
             };
 
-            const type = this.validateQuery(getQuery);
+            const type = this.validateQuery(sql);
 
             if (type === GET) {
                 ApiManager.getData(data);
