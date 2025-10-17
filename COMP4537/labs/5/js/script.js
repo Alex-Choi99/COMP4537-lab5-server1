@@ -1,5 +1,21 @@
+import ApiManager from "./ApiManager.js";
+import { messages } from "../lang/messages/en/user.js";
+
+const CLICK_METHOD = "click";
+const SUBMIT_BTN = "submit"
+const SEND_QUERY = "sendQuery";
+const ON_LOADED = "DOMContentLoaded";
+const SELECT_CMD = "select";
+const INSERT_CMD = "insert";
+const EMPTY = 0;
+const GET = 0;
+const POST = 1;
+const FAILURE = -1;
+
 /**
- * Main JavaScript file for handling form submission and data processing.
+ * FormListener executes either a post or a get request function based on the
+ * button clicked.
+ * 
  * We used some help from VSCode agent to generate some of the boilerplate code.
  * 
  * @author Alex Choi
@@ -7,75 +23,65 @@
  * @version 1.0.0
  * @date 2025-10-15
  */
-
-import SqlManager from "./SqlManager.js";
-
 class FormListener {
     constructor() {
-        this.postform = document.getElementById("patientInsertForm");
-        this.getform = document.getElementById("patientSelectForm");
-
-        this.setup();
+        this.submitBtn = document.getElementById(SUBMIT_BTN);
     }
 
+    /**
+     * Setup function creates the click method event listeners, and defines the
+     * actions to take after they are clicked.
+     */
     setup() {
-        this.postform.addEventListener("submit", (event) => {
+        this.submitBtn.addEventListener(CLICK_METHOD, (event) => {
             event.preventDefault();
 
-            const formData = new FormData(this.postform);
-            const data = {};
-            formData.forEach((value, key) => {
-                data[key] = value;
-            });
+            const getQuery = document.getElementById(SEND_QUERY).value;
 
-            SqlManager.insertData(data).then(response => {
-                console.log("Data inserted successfully:", response);
-                showPopup("Data inserted successfully!");
-            }).catch(error => {
-                console.error("Error inserting data:", error);
-                showPopup("Error inserting data: " + error);
-            });
-        });
+            const data = {
+                query: getQuery
+            };
 
-        this.getform.addEventListener("submit", (event) => {
-            event.preventDefault();
+            const type = this.validateQuery(getQuery);
 
-            const formData = new FormData(this.getform);
-            const data = {};
-            formData.forEach((value, key) => {
-                data[key] = value;
-            });
-
-            SqlManager.getData(data).then(response => {
-                console.log("Data retrieved successfully:", response);
-            }).catch(error => {
-                console.error("Error retrieving data:", error);
-            });
+            if (type === GET) {
+                ApiManager.getData(data);
+            } else if (type === POST) {
+                ApiManager.insertData(data);
+            } else {
+                alert(messages.SQL_COMMAND_INVALID);
+            }
         });
     }
 
-    showPopup(message) {
-        const popup = document.createElement('div');
-        popup.innerText = message;
-        popup.style.position = 'fixed';
-        popup.style.top = '50%';
-        popup.style.left = '50%';
-        popup.style.transform = 'translate(-50%, -50%)';
-        popup.style.backgroundColor = '#333';
-        popup.style.color = '#fff';
-        popup.style.padding = '20px';
-        popup.style.borderRadius = '5px';
-        popup.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
-        popup.style.zIndex = '1000';
-        document.body.appendChild(popup);
+    /**
+     * validateQuery checks if the query starts with either SELECT or INSERT,
+     * and returns the appropriate type.
+     * 
+     * @param {string} query - The SQL query string to validate.
+     * @returns {number} - Returns GET (0) for SELECT, POST (1) for INSERT, or FAILURE (-1) for invalid.
+     */
+    validateQuery(query) {
+        let type;
 
-        setTimeout(() => {
-            popup.remove();
-        }, 3000);
+        if (query && query.length > EMPTY) {
+            if (query.toLowerCase().startsWith(SELECT_CMD)) {
+                type = GET;
+            } else if (query.toLowerCase().startsWith(INSERT_CMD)) {
+                type = POST;
+            } else {
+                type = FAILURE;
+            }
+        }
+        else {
+            type = FAILURE;
+        }
+
+        return type;
     }
 }
 
-
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener(ON_LOADED, function () {
     const formListener = new FormListener();
+    formListener.setup();
 });

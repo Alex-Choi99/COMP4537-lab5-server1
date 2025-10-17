@@ -8,44 +8,30 @@
 </head>
 <body>
     <h1>Lab 5 - Alex Choi & Alfredo Luzardo</h1>
-    <div id="postDiv">
-        <form id="patientInsertForm">
-            <label for="patientId">Patient ID:</label>
-            <input type="number" id="postPatientId" name="patientId" required>
-            <label for="patientName">Patient Name:</label>
-            <input type="text" id="postPatientName" name="patientName" required>
-            <label for="DateOfBirth">Date of Birth:</label>
-            <input type="date" id="postDateOfBirth" name="DateOfBirth" required>
-            <button type="submitPost">Submit</button>
-        </form>
+
+    <div id="queryDiv">
+        <h1>INSERT INTO or SELECT FROM Patient data</h1>
+        <div id="patientInsertForm">
+            <textarea id="sendQuery" name="query" rows="4" required></textarea>
+            <button id="submit">Submit</button>
+        </div>
     </div>
 
     <br>
 
-    <div id="getDiv">
-        <form id="patientSelectForm">
-            <label for="patientId">Patient ID:</label>
-            <input type="number" id="getPatientId" name="patientId">
-            <label for="patientName">Patient Name:</label>
-            <input type="text" id="getPatientName" name="patientName">
-            <label for="DateOfBirth">Date of Birth:</label>
-            <input type="date" id="getDateOfBirth" name="DateOfBirth">
-            <button type="submitGet">Submit</button>
-        </form>
-        <div id="resultsDiv">
-            <table id="resultsTable">
-                <thead>
-                    <tr>
-                        <th>Patient ID</th>
-                        <th>Patient Name</th>
-                        <th>Date of Birth</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-        </div>
+    <div id="resultDiv">
+        <table id="resultTable">
+            <thead>
+                <tr>
+                    <th>Patient ID</th>
+                    <th>Patient Name</th>
+                    <th>Date of Birth</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
     </div>
-    <script src="script.js"></script>
+    <script type="module" src="js/script.js"></script>
 </body>
 </html>

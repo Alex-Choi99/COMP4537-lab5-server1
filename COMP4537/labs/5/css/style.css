@@ -1,25 +1,4 @@
-#postDiv {
-    margin: 20px;
-    border: 1px solid black;
-    padding: 20px;
-    width: 30%;
-    background-color: #f2f2f2;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-#patientSelectForm {
-    display: flex;
-    flex-direction: column;
-    width: 30%;
-}
-
-#patientInsertForm {
-    display: flex;
-    flex-direction: column;
-    width: 30%;
-}
-
-#getDiv {
+#queryDiv, #resultDiv {
     margin: 20px;
     border: 1px solid black;
     padding: 20px;
@@ -28,10 +7,22 @@
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-#resultsTable {
-    margin-top: 20px;
+#patientInsertForm {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+}
+
+#patientSelectForm {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+}
+
+#resultTable {
+    margin: 20px;
     border-collapse: collapse;
-    width: 100%;
+    width: 90%;
     border: 1px solid #000;
     tr:nth-child(even) {
         background-color: #f2f2f2;
