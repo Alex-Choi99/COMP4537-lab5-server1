@@ -5,6 +5,7 @@ const MESSAGE_RETRIEVE_NO_DATA  = "Error retrieving data";
 const SQL_COMMAND_INVALID       = "Invalid SQL Command. Please use either SELECT or INSERT, and command must not be empty.";
 const INSERT_INVALID_FOR_GET    = "Cannot perform GET request for INSERT command.";
 const SELECT_INVALID_FOR_POST   = "Cannot perform POST request for SELECT command.";
+const DANGEROUS_SQL_COMMAND     = "Your query contains dangerous keywords like 'DROP' or 'DELETE'. Please remove them.";
 
 export const messages = {
     MESSAGE_INSERT_SUCCESS,
@@ -13,5 +14,6 @@ export const messages = {
     MESSAGE_RETRIEVE_NO_DATA,
     SQL_COMMAND_INVALID,
     INSERT_INVALID_FOR_GET,
-    SELECT_INVALID_FOR_POST
+    SELECT_INVALID_FOR_POST,
+    DANGEROUS_SQL_COMMAND
 };

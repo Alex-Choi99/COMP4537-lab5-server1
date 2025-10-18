@@ -8,6 +8,8 @@ const SEND_QUERY = "sendQuery";
 const ON_LOADED = "DOMContentLoaded";
 const SELECT_CMD = "select";
 const INSERT_CMD = "insert";
+const DELETE_CMD = "delete";
+const DROP_CMD = "drop";
 const EMPTY = 0;
 const GET = 0;
 const POST = 1;
@@ -85,9 +87,14 @@ class FormListener {
         let type;
 
         if (query && query.length > EMPTY) {
-            if (query.toLowerCase().startsWith(SELECT_CMD)) {
+            const lowerQuery = query.toLowerCase();
+
+            if (lowerQuery.includes(DELETE_CMD) || lowerQuery.includes(DROP_CMD)) {
+                alert(messages.DANGEROUS_SQL_DETECTED);
+                type = FAILURE;
+            } else if (lowerQuery.startsWith(SELECT_CMD)) {
                 type = GET;
-            } else if (query.toLowerCase().startsWith(INSERT_CMD)) {
+            } else if (lowerQuery.startsWith(INSERT_CMD)) {
                 type = POST;
             } else {
                 type = FAILURE;
