@@ -2,7 +2,8 @@ import ApiManager from "./ApiManager.js";
 import { messages } from "../lang/messages/en/user.js";
 
 const CLICK_METHOD = "click";
-const SUBMIT_BTN = "submit"
+const SUBMIT_GET_BTN = "submitGet";
+const SUBMIT_POST_BTN = "submitPost";
 const SEND_QUERY = "sendQuery";
 const ON_LOADED = "DOMContentLoaded";
 const SELECT_CMD = "select";
@@ -25,7 +26,8 @@ const FAILURE = -1;
  */
 class FormListener {
     constructor() {
-        this.submitBtn = document.getElementById(SUBMIT_BTN);
+        this.submitGetBtn = document.getElementById(SUBMIT_GET_BTN);
+        this.submitPostBtn = document.getElementById(SUBMIT_POST_BTN);
     }
 
     /**
@@ -33,7 +35,7 @@ class FormListener {
      * actions to take after they are clicked.
      */
     setup() {
-        this.submitBtn.addEventListener(CLICK_METHOD, (event) => {
+        this.submitGetBtn.addEventListener(CLICK_METHOD, (event) => {
             event.preventDefault();
 
             const sql = document.getElementById(SEND_QUERY).value;
@@ -44,8 +46,26 @@ class FormListener {
 
             const type = this.validateQuery(sql);
 
-            if (type === GET) {
+            if (type === POST) {
+                alert(messages.INSERT_INVALID_FOR_GET);
+            } else if (type === GET) {
                 ApiManager.getData(data);
+            } else {
+                alert(messages.SQL_COMMAND_INVALID);
+            }
+        });
+
+        this.submitPostBtn.addEventListener(CLICK_METHOD, (event) => {
+            event.preventDefault();
+            const sql = document.getElementById(SEND_QUERY).value;
+            const data = {
+                query: sql
+            };
+
+            const type = this.validateQuery(sql);
+
+            if (type === GET) {
+                alert(messages.SELECT_INVALID_FOR_POST);
             } else if (type === POST) {
                 ApiManager.insertData(data);
             } else {
