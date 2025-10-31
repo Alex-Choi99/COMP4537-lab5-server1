@@ -2,14 +2,16 @@ import ApiManager from "./ApiManager.js";
 import { messages } from "../lang/messages/en/user.js";
 
 const CLICK_METHOD = "click";
-const SUBMIT_GET_BTN = "submitGet";
+const SUBMIT_GET_POST_BTN = "submitGetPOST";
 const SUBMIT_POST_BTN = "submitPost";
+const PART_A_BUTTON = "partAButton";
 const SEND_QUERY = "sendQuery";
 const ON_LOADED = "DOMContentLoaded";
 const SELECT_CMD = "select";
 const INSERT_CMD = "insert";
 const DELETE_CMD = "delete";
 const DROP_CMD = "drop";
+const PART_A_SQL = `"INSERT INTO patient (name, dateOfBirth) VALUES ('Sara Brown', '1901-01-01'), ('John Smith', '1941-01-01'), ('Jack Ma', '1961-01-30'), ('Elon Musk', '1999-01-01')"`;
 const EMPTY = 0;
 const GET = 0;
 const POST = 1;
@@ -28,8 +30,8 @@ const FAILURE = -1;
  */
 class FormListener {
     constructor() {
-        this.submitGetBtn = document.getElementById(SUBMIT_GET_BTN);
-        this.submitPostBtn = document.getElementById(SUBMIT_POST_BTN);
+        this.submitGetPostBtn = document.getElementById(SUBMIT_GET_POST_BTN);
+        this.partAButton = document.getElementById(PART_A_BUTTON);
     }
 
     /**
@@ -37,7 +39,20 @@ class FormListener {
      * actions to take after they are clicked.
      */
     setup() {
-        this.submitGetBtn.addEventListener(CLICK_METHOD, (event) => {
+        this.partAButton.addEventListener(CLICK_METHOD, (event) => {
+            event.preventDefault();
+
+            const sql = PART_A_SQL;
+        
+            const data = {
+                query: sql
+            };
+
+            ApiManager.insertData(data);
+        });
+
+
+        this.submitGetPostBtn.addEventListener(CLICK_METHOD, (event) => {
             event.preventDefault();
 
             const sql = document.getElementById(SEND_QUERY).value;
