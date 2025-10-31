@@ -64,27 +64,9 @@ class FormListener {
             const type = this.validateQuery(sql);
 
             if (type === POST) {
-                alert(messages.INSERT_INVALID_FOR_GET);
+                ApiManager.insertData(data);
             } else if (type === GET) {
                 ApiManager.getData(data);
-            } else {
-                alert(messages.SQL_COMMAND_INVALID);
-            }
-        });
-
-        this.submitPostBtn.addEventListener(CLICK_METHOD, (event) => {
-            event.preventDefault();
-            const sql = document.getElementById(SEND_QUERY).value;
-            const data = {
-                query: sql
-            };
-
-            const type = this.validateQuery(sql);
-
-            if (type === GET) {
-                alert(messages.SELECT_INVALID_FOR_POST);
-            } else if (type === POST) {
-                ApiManager.insertData(data);
             } else {
                 alert(messages.SQL_COMMAND_INVALID);
             }
